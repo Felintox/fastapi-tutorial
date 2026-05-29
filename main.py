@@ -5,8 +5,9 @@
 
 
 #%%
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+
 
 #%%
 app = FastAPI(
@@ -38,7 +39,7 @@ def obter_produto(id:int):
         return produtos[id]
     except Exception:
         # Captura qualquer erro (como o ID não existir) e avisa o usuário
-        return {"erro": f"O id {id} não existe na lista de produtos"}
+        raise HTTPException(status_code=404, detail=f"O id {id} não existe na lista de produtos")
         
 
 @app.post('/produtos')
@@ -54,6 +55,6 @@ def excluir_produto(id:int):
         return {'Deletado': id}
     except Exception:
         # Captura qualquer erro (como o ID não existir) e avisa o usuário
-        return {"erro": f"O id {id} não existe na lista de produtos"}
+        raise HTTPException(status_code=404, detail=f"O id {id} não existe na lista de produtos")
 
 # %%
